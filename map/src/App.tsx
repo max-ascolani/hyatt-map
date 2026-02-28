@@ -260,8 +260,8 @@ export default function App() {
   }, [])
 
   const clearFilters = useCallback(() => {
-    setActivePriceTiers(new Set(['$', '$$', '$$$', '$$$$']))
-    setActiveCuisineTags(new Set(ALL_CUISINE_TAGS))
+    setActivePriceTiers(new Set())
+    setActiveCuisineTags(new Set())
   }, [])
 
   const selectAllCuisine = useCallback(() => {
