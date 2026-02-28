@@ -3,6 +3,8 @@ import { SUPER_CATEGORIES, COMPETITORS, type CategoryId, type SuperCategoryId, t
 import TimeSlider from './TimeSlider'
 
 interface SidebarProps {
+  mobileOpen: boolean
+  onMobileClose: () => void
   activeCategories: Set<CategoryId>
   toggleCategory: (id: CategoryId) => void
   toggleSuperCategory: (id: SuperCategoryId) => void
@@ -40,6 +42,8 @@ function renderStars(rating: number | null): string {
 }
 
 export default function Sidebar({
+  mobileOpen,
+  onMobileClose,
   activeCategories,
   toggleCategory,
   toggleSuperCategory,
@@ -87,12 +91,36 @@ export default function Sidebar({
   }
 
   return (
-    <div className="w-[380px] min-w-[380px] bg-white border-r border-slate-200 flex flex-col h-full">
+    <div className={`
+      bg-white flex flex-col
+      /* Desktop: fixed-width sidebar */
+      md:w-[380px] md:min-w-[380px] md:border-r md:border-slate-200 md:h-full
+      /* Mobile: bottom sheet */
+      fixed md:relative inset-x-0 bottom-0 z-[1002] rounded-t-2xl md:rounded-none
+      shadow-[0_-4px_24px_rgba(0,0,0,0.12)] md:shadow-none
+      max-h-[85vh] md:max-h-none
+      transition-transform duration-300 ease-out
+      ${mobileOpen ? 'translate-y-0' : 'translate-y-full md:translate-y-0'}
+    `}>
+      {/* Mobile drag handle */}
+      <div className="md:hidden flex justify-center pt-2 pb-1">
+        <div className="w-10 h-1 rounded-full bg-slate-300" />
+      </div>
+
       {/* Header */}
-      <div className="px-5 py-4 border-b border-slate-200">
+      <div className="px-5 py-3 md:py-4 border-b border-slate-200">
         <div className="flex items-center gap-2 mb-1">
           <div className="w-3 h-3 rounded-full bg-blue-600" />
           <h2 className="text-sm font-semibold text-slate-800 tracking-wide uppercase">Filters</h2>
+          {/* Mobile close button */}
+          <button
+            onClick={onMobileClose}
+            className="md:hidden ml-auto p-1 text-slate-400 hover:text-slate-600 cursor-pointer"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
         <p className="text-xs text-slate-400">Toggle categories to explore the competitive landscape</p>
       </div>
@@ -413,7 +441,7 @@ export default function Sidebar({
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-3 border-t border-slate-200 bg-slate-50">
+      <div className="px-5 py-3 pb-6 md:pb-3 border-t border-slate-200 bg-slate-50">
         <p className="text-[10px] text-slate-400 text-center">
           Hyatt Members Club — Competitive Analysis &middot; {COMPETITORS.length} locations mapped
         </p>

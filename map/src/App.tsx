@@ -137,7 +137,7 @@ function HyattMarkerInner() {
 }
 
 export default function App() {
-  const [activeCategories, setActiveCategories] = useState<Set<CategoryId>>(new Set())
+  const [activeCategories, setActiveCategories] = useState<Set<CategoryId>>(new Set(CATEGORIES.map(c => c.id)))
   const [activeRings, setActiveRings] = useState<Set<number>>(new Set([0.5, 1, 2, 3]))
   const [distanceLimit, setDistanceLimit] = useState(false)
   const [activePriceTiers, setActivePriceTiers] = useState<Set<PriceTier>>(new Set(['$', '$$', '$$$', '$$$$']))
@@ -282,9 +282,32 @@ export default function App() {
     setTimeout(() => setFlyTo(null), 1000)
   }, [])
 
+  const [mobileSheetOpen, setMobileSheetOpen] = useState(false)
+
   return (
-    <div className="flex h-screen w-screen bg-slate-50">
+    <div className="flex flex-col md:flex-row h-screen w-screen bg-slate-50">
+      {/* Mobile toggle button */}
+      <button
+        onClick={() => setMobileSheetOpen(prev => !prev)}
+        className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[1100] bg-white text-slate-700 shadow-lg rounded-full px-5 py-2.5 text-sm font-semibold border border-slate-200 cursor-pointer flex items-center gap-2"
+      >
+        <svg className={`w-4 h-4 transition-transform ${mobileSheetOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+        Filters ({competitorsWithDistance.length})
+      </button>
+
+      {/* Mobile backdrop */}
+      {mobileSheetOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/30 z-[1001]"
+          onClick={() => setMobileSheetOpen(false)}
+        />
+      )}
+
       <Sidebar
+        mobileOpen={mobileSheetOpen}
+        onMobileClose={() => setMobileSheetOpen(false)}
         activeCategories={activeCategories}
         toggleCategory={toggleCategory}
         toggleSuperCategory={toggleSuperCategory}
@@ -316,11 +339,11 @@ export default function App() {
         onEndHourChange={setEndHour}
       />
 
-      <div className="flex-1 relative">
+      <div className="flex-1 relative order-first md:order-last">
         {/* Header */}
         <div className="absolute top-0 left-0 right-0 z-[1000] pointer-events-none">
-          <div className="px-6 py-4 bg-gradient-to-b from-white via-white/80 to-transparent">
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+          <div className="px-4 md:px-6 py-3 md:py-4 bg-gradient-to-b from-white via-white/80 to-transparent">
+            <h1 className="text-base md:text-xl font-bold text-slate-900 tracking-tight">
               Hyatt Regency Newport Beach
               <span className="text-slate-400 font-normal ml-2 text-sm">Competitive Landscape</span>
             </h1>
