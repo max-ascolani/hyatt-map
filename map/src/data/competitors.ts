@@ -48,6 +48,7 @@ export type CategoryId =
   | 'bars'
   | 'wine'
   | 'entertainment'
+  | 'clubs'
   // Work & Lifestyle
   | 'cowork'
   | 'shopping'
@@ -115,6 +116,7 @@ export const SUPER_CATEGORIES: SuperCategoryInfo[] = [
       { id: 'bars', label: 'Bars & Nightlife', color: '#ec4899', hyattHas: 'Lobby Lounge Bar (4.6 rating)', gap: 'No rooftop bar, no craft cocktail program, no outdoor bar with energy/scene' },
       { id: 'wine', label: 'Wine Bars / Tasting', color: '#f472b6', hyattHas: 'Nothing', gap: 'No wine program or tasting room' },
       { id: 'entertainment', label: 'Entertainment', color: '#fb7185', hyattHas: 'Nothing', gap: 'No entertainment or social activity venue' },
+      { id: 'clubs', label: 'Private Clubs', color: '#be185d', hyattHas: 'Nothing', gap: 'No members club — the core pitch opportunity' },
     ],
   },
   {
@@ -319,5 +321,15 @@ export const COMPETITORS: Competitor[] = [
   { category: 'shopping', name: 'Fashion Island', lat: 33.6158, lng: -117.8762, rating: 4.6, reviewCount: 8500, priceTier: '$$$$', note: '~0.5mi from Hyatt, Neiman Marcus, Nordstrom, alo Yoga, Lululemon, Vuori', onSite: false, website: 'https://www.fashionisland.com', hours: { mon: ['10:00', '21:00'], tue: ['10:00', '21:00'], wed: ['10:00', '21:00'], thu: ['10:00', '21:00'], fri: ['10:00', '21:00'], sat: ['10:00', '21:00'], sun: ['11:00', '19:00'] }, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Fashion+Island+Newport+Beach' },
   { category: 'shopping', name: 'Lido Marina Village', lat: 33.6187, lng: -117.9292, rating: 4.5, reviewCount: 450, priceTier: '$$$', note: 'Waterfront boutiques, elysewalker, Jenni Kayne, Le Labo, Warby Parker', onSite: false, website: 'https://www.lidomarinavillage.com', hours: { mon: ['10:00', '19:00'], tue: ['10:00', '19:00'], wed: ['10:00', '19:00'], thu: ['10:00', '19:00'], fri: ['10:00', '19:00'], sat: ['10:00', '19:00'], sun: ['10:00', '19:00'] }, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Lido+Marina+Village+Newport+Beach' },
   { category: 'shopping', name: 'Corona Del Mar Plaza', lat: 33.5960, lng: -117.8660, rating: 4.3, reviewCount: 180, priceTier: '$$$', note: 'Neighborhood shopping, boutiques, casual dining, Mediterranean architecture', onSite: false, website: null, hours: { mon: ['10:00', '17:00'], tue: ['10:00', '17:00'], wed: ['10:00', '17:00'], thu: ['10:00', '17:00'], fri: ['10:00', '17:00'], sat: ['10:00', '17:00'], sun: ['12:00', '17:00'] }, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Corona+del+Mar+Plaza' },
+
+  // ── Private Clubs ──
+  { category: 'clubs', name: 'The Elwood Club', lat: 33.6200, lng: -117.8700, rating: null, reviewCount: null, priceTier: '$$$$', note: 'Modern luxury members club at Pendry Newport Beach, multiple dining venues, spa/pool access, waitlisted', onSite: false, website: 'https://www.elwoodclub.com', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Pendry+Newport+Beach+690+Newport+Center+Dr' },
+  { category: 'clubs', name: 'Newport Beach Country Club', lat: 33.6141, lng: -117.8843, rating: 4.5, reviewCount: 120, priceTier: '$$$$', note: '18-hole championship course, 65,000 sq ft clubhouse, $100-150K initiation, invitation-only', onSite: false, website: 'https://www.newportbeachcc.com', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Newport+Beach+Country+Club+1600+E+Coast+Hwy' },
+  { category: 'clubs', name: 'Balboa Bay Club', lat: 33.6030, lng: -117.8900, rating: 4.4, reviewCount: 310, priceTier: '$$$$', note: 'Premier private club since 1948, waterfront, heated pool, fitness, spa, dining, membership by sponsorship', onSite: false, website: 'https://www.balboabayclub.com', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Balboa+Bay+Club+1221+W+Coast+Hwy+Newport+Beach' },
+  { category: 'clubs', name: 'Big Canyon Country Club', lat: 33.6199, lng: -117.8688, rating: 4.6, reviewCount: 85, priceTier: '$$$$', note: '18-hole Desmond Muirhead course, $200-300K initiation, tennis, pool, spa, invitation-only since 1971', onSite: false, website: 'https://www.bigcanyoncc.org', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Big+Canyon+Country+Club+Newport+Beach' },
+  { category: 'clubs', name: 'The Pacific Club', lat: 33.6642, lng: -117.8629, rating: 4.5, reviewCount: 50, priceTier: '$$$$', note: 'Prestigious private city club since 1981, overlooks lake, fine dining, fitness, spa, business/social hub', onSite: false, website: 'https://www.pacificclub.org', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=The+Pacific+Club+4110+MacArthur+Blvd+Newport+Beach' },
+  { category: 'clubs', name: 'thehouse Newport Beach', lat: 33.6190, lng: -117.9190, rating: 4.3, reviewCount: 65, priceTier: '$$$$', note: 'Modern supper club, waterfront harbor views, 450-member waitlist, proves demand for members-only concept', onSite: false, website: 'https://www.thehousenewportbeach.com', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=thehouse+Newport+Beach+2601+W+Coast+Hwy' },
+  { category: 'clubs', name: 'Newport Harbor Yacht Club', lat: 33.6054, lng: -117.9097, rating: 4.6, reviewCount: 45, priceTier: '$$$$', note: 'One of most exclusive yacht clubs in US, $35K initiation, invitation-only, 1000+ members', onSite: false, website: 'https://www.nhyc.org', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Newport+Harbor+Yacht+Club+720+W+Bay+Ave' },
+  { category: 'clubs', name: 'Bahia Corinthian Yacht Club', lat: 33.6070, lng: -117.8852, rating: 4.5, reviewCount: 40, priceTier: '$$$', note: '"Friendliest club on the bay" since 1958, docks, dining, social events, Corona del Mar', onSite: false, website: 'https://www.bcyc.org', hours: null, googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bahia+Corinthian+Yacht+Club+1601+Bayside+Dr+Newport+Beach' },
 
 ]
