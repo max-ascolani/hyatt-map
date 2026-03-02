@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
-import { GeoJSON } from 'react-leaflet'
+import { GeoJSON, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { CENSUS_TRACTS, DEMOGRAPHIC_METRICS, type DemographicMetric, type TractProperties } from '../data/demographics'
 import type { Feature, Polygon, MultiPolygon } from 'geojson'
@@ -45,6 +45,7 @@ interface Props {
 }
 
 export default function DemographicLayer({ visible, metric }: Props) {
+  const map = useMap()
   const breaks = useMemo(() => getBreaks(metric), [metric])
   const metricInfo = DEMOGRAPHIC_METRICS.find(m => m.key === metric)!
   const [highlightedTract, setHighlightedTract] = useState<string | null>(null)
@@ -113,7 +114,7 @@ export default function DemographicLayer({ visible, metric }: Props) {
                   <div style="font-size:13px;color:#475569;margin-top:2px">${metricInfo.label}: <strong>${metricInfo.format(val)}</strong></div>
                 </div>
               `)
-            popup.openOn((layer as L.Polygon)._map)
+            popup.openOn(map)
           })
         }}
       />
