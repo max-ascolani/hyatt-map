@@ -159,7 +159,7 @@ function HyattMarker() {
       <Popup>
         <div>
           <div style={{ fontSize: '15px', fontWeight: 700, color: '#1e40af', marginBottom: 4 }}>
-            Hyatt Regency Newport Beach
+            The Newporter
           </div>
           <div style={{ color: '#64748b', marginBottom: 6 }}>1107 Jamboree Rd, Newport Beach, CA 92660</div>
           <div style={{ color: '#64748b' }}>402 rooms &middot; 26 acres &middot; 3 pools &middot; 16 tennis courts</div>
@@ -439,7 +439,7 @@ export default function App() {
         <div className="absolute top-0 left-0 right-0 z-[1000] pointer-events-none">
           <div className="px-4 md:px-6 py-3 md:py-4 bg-gradient-to-b from-white via-white/80 to-transparent">
             <h1 className="text-base md:text-xl font-bold text-slate-900 tracking-tight">
-              Hyatt Regency Newport Beach
+              The Newporter
               <span className="text-slate-400 font-normal ml-2 text-sm">Competitive Landscape</span>
             </h1>
           </div>

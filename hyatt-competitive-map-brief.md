@@ -1,8 +1,8 @@
-# Hyatt Regency Newport Beach — Competitive Landscape Map
+# The Newporter — Competitive Landscape Map
 
 ## Project Overview
 
-Build an interactive web-based map centered on the Hyatt Regency Newport Beach (1107 Jamboree Rd, Newport Beach, CA 92660) that visualizes all competing amenities in the local area. This is for a pitch to Hyatt about building a private members club for locals (target demo: 25–40 year olds).
+Build an interactive web-based map centered on the The Newporter (1107 Jamboree Rd, Newport Beach, CA 92660) that visualizes all competing amenities in the local area. This is for a pitch to Hyatt about building a private members club for locals (target demo: 25–40 year olds).
 
 The goal is to show: **"Here's everything that exists around the Hyatt, category by category — and here's where the gaps are that a members club could fill."**
 
@@ -11,7 +11,7 @@ The goal is to show: **"Here's everything that exists around the Hyatt, category
 ## Core Features
 
 ### 1. Interactive Map
-- **Centered on Hyatt Regency Newport Beach** (33.6178, -117.8894)
+- **Centered on The Newporter** (33.6178, -117.8894)
 - Use a real map (Mapbox, Google Maps, or Leaflet/OpenStreetMap)
 - Color-coded dots/markers for each amenity category
 - Click/hover on markers to see details (name, rating, price, notes)

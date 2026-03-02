@@ -1,6 +1,6 @@
-# Hyatt Regency Newport Beach — Interactive Competition Map
+# The Newporter — Interactive Competition Map
 
-An interactive map visualizing the competitive landscape around the Hyatt Regency Newport Beach (1107 Jamboree Rd, Newport Beach, CA 92660) for a proposed private members club targeting 25–40 year-old professionals.
+An interactive map visualizing the competitive landscape around the The Newporter (1107 Jamboree Rd, Newport Beach, CA 92660) for a proposed private members club targeting 25–40 year-old professionals.
 
 ## Quick Start
 

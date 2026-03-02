@@ -2,7 +2,7 @@
 
 ## Overview
 
-An interactive competitive landscape map for the Hyatt Regency Newport Beach. Built with React, TypeScript, Vite, Leaflet, and Tailwind CSS.
+An interactive competitive landscape map for the The Newporter. Built with React, TypeScript, Vite, Leaflet, and Tailwind CSS.
 
 ## Project Structure
 

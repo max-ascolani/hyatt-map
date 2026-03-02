@@ -6,7 +6,7 @@
 
 ## Context
 
-We're building a pitch to Hyatt about creating a private members club at the Hyatt Regency Newport Beach (1107 Jamboree Rd, Newport Beach, CA 92660). **Target demo: 25–40 year olds.**
+We're building a pitch to Hyatt about creating a private members club at the The Newporter (1107 Jamboree Rd, Newport Beach, CA 92660). **Target demo: 25–40 year olds.**
 
 This map is a core piece of that pitch. The goal is to show: **"Here's everything that exists around the Hyatt, category by category — and here's where the gaps are that a members club could fill."**
 
@@ -231,7 +231,7 @@ All data sourced from `hyatt-competitive-map-brief.md`. This is the primary data
 ## Phase 4 — Polish & Presentation Quality
 
 - [x] Add smooth animations when toggling categories (CSS transition on SVG path opacity)
-- [x] Add a header/title bar: "Hyatt Regency Newport Beach — Competitive Landscape"
+- [x] Add a header/title bar: "The Newporter — Competitive Landscape"
 - [x] Ensure the Hyatt marker is always visible (never hidden by filters) and visually dominant
 - [x] Add hover effects on markers (grow on hover via `setRadius`, CSS `drop-shadow` glow)
 - [x] Add distance ring labels (0.5 mi, 1 mi, 2 mi, 3 mi) positioned on the ring perimeter

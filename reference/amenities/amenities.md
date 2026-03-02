@@ -1,4 +1,4 @@
-# Hyatt Regency Newport Beach — Amenities Overview
+# The Newporter — Amenities Overview
 
 **Property:** 1107 Jamboree Rd, Newport Beach, CA 92660
 **Website:** [hyatt.com](https://www.hyatt.com/hyatt-regency/en-US/newpo-hyatt-regency-newport-beach)

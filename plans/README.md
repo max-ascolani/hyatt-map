@@ -1,6 +1,6 @@
 # Plans
 
-This directory contains all project plans for the Hyatt Regency Newport Beach Members Club project. Every plan follows a consistent structure to ensure thorough investigation, clear execution, and proper documentation.
+This directory contains all project plans for the The Newporter Members Club project. Every plan follows a consistent structure to ensure thorough investigation, clear execution, and proper documentation.
 
 ## Directory Structure
 
