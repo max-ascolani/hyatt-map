@@ -1,8 +1,13 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { MapContainer, TileLayer, CircleMarker, Circle, Popup, useMap, Marker } from 'react-leaflet'
 import L from 'leaflet'
 import { HYATT_COORDS, CATEGORIES, SUPER_CATEGORIES, COMPETITORS, type CategoryId, type SuperCategoryId, type CuisineTag, type Competitor, type PriceTier, type DayOfWeek, type WeeklyHours } from './data/competitors'
+import { NEIGHBORHOOD_NAMES } from './data/neighborhoods'
+import { type DemographicMetric } from './data/demographics'
 import Sidebar from './components/Sidebar'
+import NeighborhoodLayer from './components/NeighborhoodLayer'
+import DemographicLayer from './components/DemographicLayer'
+import CategoryLegend from './components/CategoryLegend'
 
 const DISTANCE_RINGS = [
   { miles: 0.5, meters: 805, label: '0.5 mi', angle: 90 },
@@ -79,6 +84,58 @@ function isOpenDuring(
   return hasKnownDay ? false : null
 }
 
+const DEFAULT_ZOOM = 14
+
+function RecenterButton() {
+  const map = useMap()
+  const handleClick = () => {
+    map.setView(HYATT_COORDS, DEFAULT_ZOOM)
+  }
+  return (
+    <button
+      onClick={handleClick}
+      title="Re-center on Hyatt"
+      style={{
+        position: 'absolute',
+        top: 80,
+        right: 10,
+        zIndex: 1000,
+        background: '#fff',
+        border: '2px solid rgba(0,0,0,0.2)',
+        borderRadius: 4,
+        width: 34,
+        height: 34,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 18,
+        color: '#333',
+        lineHeight: 1,
+        padding: 0,
+        boxShadow: 'none',
+      }}
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="8" cy="8" r="3" />
+        <line x1="8" y1="0" x2="8" y2="3" />
+        <line x1="8" y1="13" x2="8" y2="16" />
+        <line x1="0" y1="8" x2="3" y2="8" />
+        <line x1="13" y1="8" x2="16" y2="8" />
+      </svg>
+    </button>
+  )
+}
+
+function InvalidateSize({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
+  const map = useMap()
+  useEffect(() => {
+    const timer = setTimeout(() => map.invalidateSize(), 350)
+    return () => clearTimeout(timer)
+  }, [map, sidebarCollapsed])
+  return null
+}
+
 function FlyToMarker({ lat, lng }: { lat: number; lng: number }) {
   const map = useMap()
   useMemo(() => {
@@ -149,7 +206,21 @@ export default function App() {
   const ALL_CUISINE_TAGS: CuisineTag[] = ['japanese', 'italian', 'mexican', 'seafood', 'american', 'french', 'californian', 'health', 'brunch']
   const DINING_SUB_CATEGORIES: CategoryId[] = ['dining', 'upscale_casual', 'sushi', 'casual', 'health_food', 'brunch']
   const [activeCuisineTags, setActiveCuisineTags] = useState<Set<CuisineTag>>(new Set(ALL_CUISINE_TAGS))
+  const [activeNeighborhoods, setActiveNeighborhoods] = useState<Set<string>>(new Set())
+  const [showDemographics, setShowDemographics] = useState(false)
+  const [demographicMetric, setDemographicMetric] = useState<DemographicMetric>('medianIncome')
   const [flyTo, setFlyTo] = useState<{ lat: number; lng: number } | null>(null)
+  const [highlightedCategory, setHighlightedCategory] = useState<CategoryId | SuperCategoryId | null>(null)
+
+  // Determine which sub-categories are highlighted (null = all normal)
+  const highlightedSubCategories = useMemo<Set<CategoryId> | null>(() => {
+    if (!highlightedCategory) return null
+    // Check if it's a super-category
+    const sc = SUPER_CATEGORIES.find(s => s.id === highlightedCategory)
+    if (sc) return new Set(sc.children.map(c => c.id))
+    // Otherwise it's a sub-category
+    return new Set([highlightedCategory as CategoryId])
+  }, [highlightedCategory])
 
   const toggleCategory = useCallback((id: CategoryId) => {
     setActiveCategories(prev => {
@@ -281,7 +352,23 @@ export default function App() {
     setTimeout(() => setFlyTo(null), 1000)
   }, [])
 
+  const toggleNeighborhood = useCallback((name: string) => {
+    setActiveNeighborhoods(prev => {
+      const next = new Set(prev)
+      if (next.has(name)) next.delete(name)
+      else next.add(name)
+      return next
+    })
+  }, [])
+
+  const toggleAllNeighborhoods = useCallback(() => {
+    setActiveNeighborhoods(prev =>
+      prev.size > 0 ? new Set() : new Set(NEIGHBORHOOD_NAMES)
+    )
+  }, [])
+
   const [mobileSheetOpen, setMobileSheetOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   return (
     <div className="flex flex-col md:flex-row h-screen w-screen bg-slate-50">
@@ -307,6 +394,8 @@ export default function App() {
       <Sidebar
         mobileOpen={mobileSheetOpen}
         onMobileClose={() => setMobileSheetOpen(false)}
+        collapsed={sidebarCollapsed}
+        onCollapse={() => setSidebarCollapsed(true)}
         activeCategories={activeCategories}
         toggleCategory={toggleCategory}
         toggleSuperCategory={toggleSuperCategory}
@@ -336,6 +425,13 @@ export default function App() {
         endHour={endHour}
         onStartHourChange={setStartHour}
         onEndHourChange={setEndHour}
+        activeNeighborhoods={activeNeighborhoods}
+        onToggleNeighborhood={toggleNeighborhood}
+        onToggleAllNeighborhoods={toggleAllNeighborhoods}
+        showDemographics={showDemographics}
+        onToggleDemographics={() => setShowDemographics(prev => !prev)}
+        demographicMetric={demographicMetric}
+        onDemographicMetricChange={setDemographicMetric}
       />
 
       <div className="flex-1 relative order-first md:order-last">
@@ -349,9 +445,21 @@ export default function App() {
           </div>
         </div>
 
+        {/* Sidebar expand button (visible when sidebar is collapsed) */}
+        {sidebarCollapsed && (
+          <button
+            onClick={() => setSidebarCollapsed(false)}
+            className="hidden md:flex absolute top-[100px] left-[10px] z-[1000] bg-white text-slate-600 hover:text-slate-900 shadow-md rounded-lg w-9 h-9 items-center justify-center border border-slate-200 cursor-pointer transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
+
         <MapContainer
           center={HYATT_COORDS}
-          zoom={14}
+          zoom={DEFAULT_ZOOM}
           style={{ height: '100%', width: '100%' }}
           zoomControl={true}
           attributionControl={true}
@@ -360,6 +468,12 @@ export default function App() {
             attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           />
+
+          {/* Demographics choropleth (bottom-most overlay) */}
+          <DemographicLayer visible={showDemographics} metric={demographicMetric} />
+
+          {/* Neighborhood boundaries (rendered below rings and markers) */}
+          <NeighborhoodLayer activeNeighborhoods={activeNeighborhoods} onToggleNeighborhood={toggleNeighborhood} />
 
           {/* Distance rings with labels */}
           {DISTANCE_RINGS.filter(ring => activeRings.has(ring.miles)).map(ring => {
@@ -395,15 +509,16 @@ export default function App() {
             const baseRadius = c.onSite ? 10 : (c.rating !== null && c.rating >= 4.5 ? 8 : c.rating !== null && c.rating < 4.0 ? 6 : 7)
             const openStatus = timeFilterEnabled ? isOpenDuring(c.hours, selectedDays, startHour, endHour) : null
             const isClosed = openStatus === false
+            const isGreyed = highlightedSubCategories !== null && !highlightedSubCategories.has(c.category)
             return (
               <CircleMarker
                 key={`${c.category}-${i}`}
                 center={[c.lat, c.lng]}
                 radius={isClosed ? baseRadius - 1 : baseRadius}
                 pathOptions={{
-                  fillColor: isClosed ? '#94a3b8' : color,
-                  fillOpacity: isClosed ? 0.25 : (c.rating !== null && c.rating < 4.0 ? 0.55 : 0.85),
-                  color: isClosed ? '#cbd5e1' : '#ffffff',
+                  fillColor: isClosed || isGreyed ? '#94a3b8' : color,
+                  fillOpacity: isGreyed ? 0.18 : (isClosed ? 0.25 : (c.rating !== null && c.rating < 4.0 ? 0.55 : 0.85)),
+                  color: isClosed || isGreyed ? '#cbd5e1' : '#ffffff',
                   weight: c.onSite ? 2.5 : 2,
                 }}
                 eventHandlers={{
@@ -501,7 +616,14 @@ export default function App() {
           <HyattMarkerInner />
 
           {flyTo && <FlyToMarker lat={flyTo.lat} lng={flyTo.lng} />}
+          <InvalidateSize sidebarCollapsed={sidebarCollapsed} />
+          <RecenterButton />
         </MapContainer>
+
+        {/* Floating category legend (hidden when demographics overlay is active) */}
+        {!showDemographics && (
+          <CategoryLegend activeCategories={activeCategories} highlightedCategory={highlightedCategory} onHighlight={setHighlightedCategory} />
+        )}
       </div>
     </div>
   )
